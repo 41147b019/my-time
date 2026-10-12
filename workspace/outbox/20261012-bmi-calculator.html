@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMI 計算機</title>
+<style>
+  :root {
+    --ink: #16343b;
+    --muted: #526b70;
+    --sea: #087e8b;
+    --coral: #e76f51;
+    --line: #cbded9;
+    --paper: #fffdf8;
+    --wash: #edf7f3;
+    --tag-under: #3a86ff;
+    --tag-norm: #2a9d8f;
+    --tag-over: #e9c46a;
+    --tag-mild: #f4a261;
+    --tag-mod: #e76f51;
+    --tag-sev: #d62828;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+  }
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: 1.5rem; margin: 0; }
+  .note { font-size: 0.85rem; color: var(--muted); margin: 0 0 16px; }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group {
+    margin-bottom: 14px;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  input[type="number"] {
+    flex: 1;
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--ink);
+  }
+  input[type="number"]:focus {
+    border-color: var(--sea);
+  }
+  .unit {
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 32px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  button {
+    font: inherit;
+    border-radius: 8px;
+    border: 1px solid var(--sea);
+    background: #fff;
+    color: var(--sea);
+    padding: 9px 16px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button.primary {
+    background: var(--sea);
+    color: #fff;
+  }
+  button:hover {
+    opacity: 0.92;
+  }
+  #error-box {
+    border: 1px solid var(--coral);
+    background: #fdf0ec;
+    color: #b03a2e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+  }
+  #result-box {
+    border: 2px solid var(--sea);
+    border-radius: 10px;
+    background: var(--wash);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .bmi-val {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  .healthy-range {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  .healthy-range strong {
+    color: var(--ink);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.88rem;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background: var(--wash);
+    font-weight: 700;
+  }
+  .disclaimer {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .disclaimer p {
+    margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="t-title">BMI 計算機</h1>
+    <button type="button" id="lang-btn">English</button>
+  </header>
+  <p class="note" id="t-subtitle">台灣衛福部成人體位分級標準</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label for="height" id="t-lbl-height">身高</label>
+      <div class="input-wrapper">
+        <input type="number" id="height" min="50" max="250" step="0.1" placeholder="例如 170">
+        <span class="unit" id="t-unit-height">公分</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="weight" id="t-lbl-weight">體重</label>
+      <div class="input-wrapper">
+        <input type="number" id="weight" min="10" max="300" step="0.1" placeholder="例如 65">
+        <span class="unit" id="t-unit-weight">公斤</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" id="btn-calc">計算</button>
+      <button type="button" id="btn-reset">重設</button>
+    </div>
+  </div>
+
+  <div id="error-box" hidden></div>
+
+  <div id="result-box" hidden>
+    <div class="result-header">
+      <div>
+        <span id="t-res-label">您的 BMI：</span>
+        <span class="bmi-val" id="res-bmi">--</span>
+      </div>
+      <div id="res-badge" class="badge">--</div>
+    </div>
+    <p class="healthy-range" id="res-range"></p>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1.05rem; margin:0 0 8px;" id="t-tbl-title">衛福部成人 BMI 判定標準</h2>
+    <table>
+      <thead>
+        <tr>
+          <th id="t-th-cat">體位分類</th>
+          <th id="t-th-range">BMI 範圍</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td id="t-cat-under">過輕 Underweight</td><td>BMI &lt; 18.5</td></tr>
+        <tr><td id="t-cat-norm">正常 Normal</td><td>18.5 ≤ BMI &lt; 24.0</td></tr>
+        <tr><td id="t-cat-over">過重 Overweight</td><td>24.0 ≤ BMI &lt; 27.0</td></tr>
+        <tr><td id="t-cat-mild">輕度肥胖 Mild obesity</td><td>27.0 ≤ BMI &lt; 30.0</td></tr>
+        <tr><td id="t-cat-mod">中度肥胖 Moderate obesity</td><td>30.0 ≤ BMI &lt; 35.0</td></tr>
+        <tr><td id="t-cat-sev">重度肥胖 Severe obesity</td><td>BMI ≥ 35.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="disclaimer">
+    <p id="t-disc1">※ 本工具採台灣衛福部成人 BMI 分級，兒童青少年、孕婦不適用。</p>
+    <p id="t-disc2">※ 僅供參考，不是醫療建議。</p>
+  </div>
+</main>
+
+<script>
+(function() {
+  var lang = "zh";
+  var lastResult = null;
+
+  var I18N = {
+    zh: {
+      docTitle: "BMI 計算機",
+      title: "BMI 計算機",
+      langBtn: "English",
+      subtitle: "台灣衛福部成人體位分級標準",
+      lblHeight: "身高",
+      lblWeight: "體重",
+      phHeight: "例如 170",
+      phWeight: "例如 65",
+      unitHeight: "公分",
+      unitWeight: "公斤",
+      btnCalc: "計算",
+      btnReset: "重設",
+      resLabel: "您的 BMI：",
+      rangePrefix: "此身高的健康體重範圍（BMI 18.5～24）：",
+      rangeUnit: "公斤",
+      tblTitle: "衛福部成人 BMI 判定標準",
+      thCat: "體位分類",
+      thRange: "BMI 範圍",
+      catUnder: "過輕 Underweight",
+      catNorm: "正常 Normal",
+      catOver: "過重 Overweight",
+      catMild: "輕度肥胖 Mild obesity",
+      catMod: "中度肥胖 Moderate obesity",
+      catSev: "重度肥胖 Severe obesity",
+      badgeUnder: "過輕 Underweight",
+      badgeNorm: "正常 Normal",
+      badgeOver: "過重 Overweight",
+      badgeMild: "輕度肥胖 Mild obesity",
+      badgeMod: "中度肥胖 Moderate obesity",
+      badgeSev: "重度肥胖 Severe obesity",
+      disc1: "※ 本工具採台灣衛福部成人 BMI 分級，兒童青少年、孕婦不適用。",
+      disc2: "※ 僅供參考，不是醫療建議。",
+      errEmpty: "請輸入身高與體重。",
+      errHeight: "請輸入有效的身高數值（建議範圍 50～250 公分）。",
+      errWeight: "請輸入有效的體重數值（建議範圍 10～300 公斤）。"
+    },
+    en: {
+      docTitle: "BMI Calculator",
+      title: "BMI Calculator",
+      langBtn: "中文",
+      subtitle: "Adult BMI Standards by Ministry of Health and Welfare (Taiwan)",
+      lblHeight: "Height",
+      lblWeight: "Weight",
+      phHeight: "e.g. 170",
+      phWeight: "e.g. 65",
+      unitHeight: "cm",
+      unitWeight: "kg",
+      btnCalc: "Calculate",
+      btnReset: "Reset",
+      resLabel: "Your BMI: ",
+      rangePrefix: "Healthy weight range for this height (BMI 18.5–24): ",
+      rangeUnit: "kg",
+      tblTitle: "MOHW Adult BMI Classification",
+      thCat: "Category",
+      thRange: "BMI Range",
+      catUnder: "Underweight 過輕",
+      catNorm: "Normal 正常",
+      catOver: "Overweight 過重",
+      catMild: "Mild obesity 輕度肥胖",
+      catMod: "Moderate obesity 中度肥胖",
+      catSev: "Severe obesity 重度肥胖",
+      badgeUnder: "Underweight 過輕",
+      badgeNorm: "Normal 正常",
+      badgeOver: "Overweight 過重",
+      badgeMild: "Mild obesity 輕度肥胖",
+      badgeMod: "Moderate obesity 中度肥胖",
+      badgeSev: "Severe obesity 重度肥胖",
+      disc1: "※ This tool uses adult BMI standards from Taiwan's Ministry of Health and Welfare; not applicable to children, adolescents, or pregnant women.",
+      disc2: "※ For reference only; not intended as medical advice.",
+      errEmpty: "Please enter both height and weight.",
+      errHeight: "Please enter a valid height (recommended range: 50–250 cm).",
+      errWeight: "Please enter a valid weight (recommended range: 10–300 kg)."
+    }
+  };
+
+  var BADGE_COLORS = {
+    underweight: "var(--tag-under)",
+    normal: "var(--tag-norm)",
+    overweight: "var(--tag-over)",
+    mild_obesity: "var(--tag-mild)",
+    moderate_obesity: "var(--tag-mod)",
+    severe_obesity: "var(--tag-sev)"
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function applyLanguage() {
+    var t = I18N[lang];
+    document.documentElement.lang = lang === "zh" ? "zh-Hant-TW" : "en";
+    document.title = t.docTitle;
+    $("t-title").textContent = t.title;
+    $("lang-btn").textContent = t.langBtn;
+    $("t-subtitle").textContent = t.subtitle;
+    $("t-lbl-height").textContent = t.lblHeight;
+    $("t-lbl-weight").textContent = t.lblWeight;
+    $("height").placeholder = t.phHeight;
+    $("weight").placeholder = t.phWeight;
+    $("t-unit-height").textContent = t.unitHeight;
+    $("t-unit-weight").textContent = t.unitWeight;
+    $("btn-calc").textContent = t.btnCalc;
+    $("btn-reset").textContent = t.btnReset;
+    $("t-res-label").textContent = t.resLabel;
+    $("t-tbl-title").textContent = t.tblTitle;
+    $("t-th-cat").textContent = t.thCat;
+    $("t-th-range").textContent = t.thRange;
+    $("t-cat-under").textContent = t.catUnder;
+    $("t-cat-norm").textContent = t.catNorm;
+    $("t-cat-over").textContent = t.catOver;
+    $("t-cat-mild").textContent = t.catMild;
+    $("t-cat-mod").textContent = t.catMod;
+    $("t-cat-sev").textContent = t.catSev;
+    $("t-disc1").textContent = t.disc1;
+    $("t-disc2").textContent = t.disc2;
+
+    if (lastResult) {
+      renderResult(lastResult);
+    }
+  }
+
+  function showError(msg) {
+    var eb = $("error-box");
+    eb.textContent = msg;
+    eb.hidden = false;
+    $("result-box").hidden = true;
+  }
+
+  function clearError() {
+    $("error-box").hidden = true;
+    $("error-box").textContent = "";
+  }
+
+  function renderResult(res) {
+    var t = I18N[lang];
+    var badgeKey = "badge" + res.category.charAt(0).toUpperCase() + res.category.slice(1).replace(/_([a-z])/g, function(_, c) { return c.toUpperCase(); });
+    $("res-bmi").textContent = res.bmiStr;
+    var badgeEl = $("res-badge");
+    badgeEl.textContent = t[badgeKey];
+    badgeEl.style.backgroundColor = BADGE_COLORS[res.category];
+    $("res-range").innerHTML = t.rangePrefix + "<strong>" + res.minWeight + " ～ " + res.maxWeight + "</strong> " + t.rangeUnit;
+    $("result-box").hidden = false;
+  }
+
+  function calculate() {
+    clearError();
+    var t = I18N[lang];
+    var hStr = $("height").value.trim();
+    var wStr = $("weight").value.trim();
+
+    if (hStr === "" || wStr === "") {
+      showError(t.errEmpty);
+      return;
+    }
+
+    var h = Number(hStr);
+    var w = Number(wStr);
+
+    if (isNaN(h) || !isFinite(h) || h < 50 || h > 250) {
+      showError(t.errHeight);
+      return;
+    }
+
+    if (isNaN(w) || !isFinite(w) || w < 10 || w > 300) {
+      showError(t.errWeight);
+      return;
+    }
+
+    var hM = h / 100;
+    var rawBmi = w / (hM * hM);
+    var bmiVal = Math.round(rawBmi * 10) / 10;
+    var bmiStr = bmiVal.toFixed(1);
+
+    var category = "";
+    if (bmiVal < 18.5) {
+      category = "underweight";
+    } else if (bmiVal < 24.0) {
+      category = "normal";
+    } else if (bmiVal < 27.0) {
+      category = "overweight";
+    } else if (bmiVal < 30.0) {
+      category = "mild_obesity";
+    } else if (bmiVal < 35.0) {
+      category = "moderate_obesity";
+    } else {
+      category = "severe_obesity";
+    }
+
+    var minW = (Math.round(18.5 * hM * hM * 10) / 10).toFixed(1);
+    var maxW = (Math.round(24.0 * hM * hM * 10) / 10).toFixed(1);
+
+    lastResult = {
+      bmiVal: bmiVal,
+      bmiStr: bmiStr,
+      category: category,
+      minWeight: minW,
+      maxWeight: maxW
+    };
+
+    renderResult(lastResult);
+  }
+
+  function resetForm() {
+    $("height").value = "";
+    $("weight").value = "";
+    clearError();
+    $("result-box").hidden = true;
+    lastResult = null;
+  }
+
+  $("btn-calc").addEventListener("click", calculate);
+  $("btn-reset").addEventListener("click", resetForm);
+  $("height").addEventListener("keydown", function(e) { if (e.key === "Enter") calculate(); });
+  $("weight").addEventListener("keydown", function(e) { if (e.key === "Enter") calculate(); });
+
+  $("lang-btn").addEventListener("click", function() {
+    lang = lang === "zh" ? "en" : "zh";
+    applyLanguage();
+  });
+
+  applyLanguage();
+})();
+</script>
+<!-- 交接：已完成符合台灣衛福部成人標準之單一 HTML BMI 計算機，具中英雙語切換、輸入驗證、健康體重範圍試算，完全無外部資源引用與個人資料儲存，可直接使用。 -->
+</body>
+</html>
