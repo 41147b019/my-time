@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<title>專題書面報告：BMR & TDEE 熱量計算機 / Project Report: BMR & TDEE Calorie Calculator</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-right {
+      content: counter(page);
+      font-size: 9pt;
+      color: #666;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+    color: #1a2b2e;
+    background: #fff;
+    line-height: 1.6;
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    border-bottom: 2px solid #087e8b;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 18pt;
+    margin: 0 0 4px;
+    color: #087e8b;
+  }
+  .sub-title {
+    font-size: 11pt;
+    color: #556c71;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .meta-box {
+    background: #edf7f3;
+    border-left: 4px solid #087e8b;
+    padding: 8px 12px;
+    margin: 12px 0 16px;
+    font-size: 9pt;
+  }
+  .meta-box p { margin: 2px 0; }
+  .meta-box a { color: #087e8b; text-decoration: none; word-break: break-all; }
+  h2 {
+    font-size: 13pt;
+    color: #16343b;
+    border-bottom: 1px solid #cbded9;
+    padding-bottom: 4px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 10.5pt;
+    color: #087e8b;
+    margin: 12px 0 4px;
+    page-break-after: avoid;
+  }
+  p {
+    margin: 0 0 6px;
+    text-align: justify;
+  }
+  .bilingual-pair {
+    margin-bottom: 10px;
+  }
+  .zh {
+    color: #1a2b2e;
+    font-weight: 400;
+  }
+  .en {
+    color: #4b6267;
+    font-size: 9pt;
+    margin-top: 1px;
+    font-style: normal;
+  }
+  ul, ol {
+    margin: 4px 0 10px;
+    padding-left: 20px;
+  }
+  li { margin-bottom: 6px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 8.5pt;
+  }
+  th, td {
+    border: 1px solid #cbded9;
+    padding: 6px 8px;
+    text-align: left;
+  }
+  th {
+    background: #edf7f3;
+    color: #16343b;
+    font-weight: bold;
+  }
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #087e8b;
+    color: #fff;
+    font-size: 7.5pt;
+    font-weight: bold;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>專題成果書面報告 / Project Final Report</h1>
+  <div class="sub-title">BMR & TDEE 熱量計算機 / BMR & TDEE Calorie Calculator</div>
+</div>
+
+<div class="meta-box">
+  <p><strong>專題本體 Repository / Project Repository:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></p>
+  <p><strong>線上體驗網址 / Live Demo URL:</strong> <a href="https://41147b019.github.io/tdee-calculator/">https://41147b019.github.io/tdee-calculator/</a></p>
+  <p><strong>作者 / Student:</strong> 41147b019 &nbsp;|&nbsp; <strong>指導模式 / Workflow:</strong> 人機協同雙 AI 團隊模式 (Captain-Leader-Member Relay)</p>
+</div>
+
+<h2>一、做什麼 / What We Built</h2>
+<div class="bilingual-pair">
+  <p class="zh">本專題打造了一個開箱即用、零外部相依的「BMR & TDEE 熱量計算機」純前端網頁應用工具。使用者僅需輸入基本生理數據與日常活動量，系統即可依據國際科學標準公式精算出基礎代謝率與每日總熱量消耗，並即時規劃出五大健康目標之卡路里攝取方針。</p>
+  <p class="en">This project built an out-of-the-box, zero-dependency "BMR & TDEE Calorie Calculator" client-side web application. Users enter basic physiological data and activity levels, and the tool calculates their Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) based on international scientific formulas, providing real-time dietary targets for five health goals.</p>
+</div>
+
+<h3>核心功能亮點 / Core Feature Highlights</h3>
+<ul>
+  <li>
+    <div class="zh"><strong>科學推算 (Scientific Calculation)</strong>：採用國際公認臨床誤差最低的 Mifflin-St Jeor 公式精算 BMR，結合 5 種日常活動係數（1.2 至 1.9）推算 TDEE。</div>
+    <div class="en">Accurate BMR calculation using the clinically proven Mifflin-St Jeor equation, combined with 5 activity multiplier tiers (1.2 to 1.9) to compute TDEE.</div>
+  </li>
+  <li>
+    <div class="zh"><strong>五大生活目標建議 (Five Target Recommendations)</strong>：維持體重、溫和減脂（－300 kcal）、積極減脂（－500 kcal）、溫和增肌（＋300 kcal）、積極增肌（＋500 kcal）。</div>
+    <div class="en">Five tailored goal targets: Weight maintenance, mild cut (-300 kcal), active cut (-500 kcal), mild bulk (+300 kcal), and active bulk (+500 kcal).</div>
+  </li>
+  <li>
+    <div class="zh"><strong>代謝安全防呆預警 (Metabolic Safety Guard)</strong>：若熱量赤字過大導致目標攝取低於個人 BMR，系統將亮起警示，防止長期極端節食造成代謝損傷。</div>
+    <div class="en">Visual safety warning triggered whenever target calories drop below personal BMR, guarding users against metabolic slowdown and muscle wasting.</div>
+  </li>
+  <li>
+    <div class="zh"><strong>極致輕量與雙語切換 (Lightweight & Bilingual)</strong>：單一 HTML 檔案架構、零外部 CDN 相依、無追蹤碼且不存取個資；繁體中文與英文即時切換。</div>
+    <div class="en">Single standalone HTML file, zero CDN/npm dependencies, privacy-respecting (no telemetry/storage), and instant Traditional Chinese/English language toggle.</div>
+  </li>
+</ul>
+
+<h2>二、給誰用 / Target Audience</h2>
+<div class="bilingual-pair">
+  <p class="zh"><strong>1. 體態管理與外食減重族群</strong>：想健康減脂卻缺乏計算概念、常因吃太少而陷入溜溜球復胖困境的大學生與上班族。</p>
+  <p class="en"><strong>1. Health & Weight Management Individuals</strong>: Students and office workers who want to lose fat safely without falling into starvation diets and yo-yo rebound effects.</p>
+</div>
+<div class="bilingual-pair">
+  <p class="zh"><strong>2. 健身與肌力訓練愛好者</strong>：需要精確掌握熱量赤字（Calorie Deficit）與熱量盈餘（Calorie Surplus）以輔助增肌期與減脂期課表的重訓者。</p>
+  <p class="en"><strong>2. Fitness & Gym Enthusiasts</strong>: Lifters who need precise caloric surplus or deficit numbers to support structured hypertrophy or cutting phases.</p>
+</div>
+<div class="bilingual-pair">
+  <p class="zh"><strong>3. 追求極簡與隱私工具的使用者</strong>：不願下載臃腫 App、反感強迫註冊帳號與廣告推播，追求「點開網頁 10 秒內算完就走」的現代使用者。</p>
+  <p class="en"><strong>3. Minimalist & Privacy-Conscious Users</strong>: Users tired of ad-heavy apps and forced registrations who desire a 10-second web tool that respects privacy.</p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>三、怎麼跟 AI 一起做 / Human-AI Collaboration Process</h2>
+<div class="bilingual-pair">
+  <p class="zh">本專題全程落實「小隊長（人類決策） ➔ 領隊・洄瀾（AI 規格與驗收） ➔ 隊員・太魯閣（AI 編程與執行）」之傳紙條階層協同架構：</p>
+  <p class="en">This project strictly followed the three-tier collaboration workflow: "Captain (Human Decision) ➔ Leader Wailan (AI Specification & Review) ➔ Member Taroko (AI Coding & Delivery)" using asynchronous note-passing (inbox/outbox):</p>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>協同階段 / Phase</th>
+      <th>人類小隊長 / Captain</th>
+      <th>AI 領隊・洄瀾 / AI Leader</th>
+      <th>AI 隊員・太魯閣 / AI Member</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. 需求發想與立案<br>Ideation</strong></td>
+      <td>提出希望製作生活實用工具，拍板選定熱量計算機。<br>Decided on Calorie Calculator concept.</td>
+      <td>規劃功能規格、界定公式與防呆指標。<br>Framed technical specs and safety rules.</td>
+      <td>隨時待命，提供實務執行方案。<br>Offered implementation approaches.</td>
+    </tr>
+    <tr>
+      <td><strong>2. 敏捷迭代與驗收<br>Iteration & QA</strong></td>
+      <td>確認功能符合直覺，要求雙語切換。<br>Tested UX and requested bilingual toggle.</td>
+      <td>逐字逐行對照醫學文獻與程式碼進行驗收。<br>Verified formulas and boundary safety.</td>
+      <td>編寫單檔 HTML，實作 I18N 與無障礙屬性。<br>Built single HTML, I18N, and a11y labels.</td>
+    </tr>
+    <tr>
+      <td><strong>3. 工程落檔與部署<br>Deployment</strong></td>
+      <td>建立 GitHub 倉庫與提供 Token 認證。<br>Created GitHub Repo & provided credentials.</td>
+      <td>把關檔案乾淨度與 Git 歷史一致性。<br>Audited commit hygiene and folder rules.</td>
+      <td>執行 Git Commit、推送主分支並配置 Pages。<br>Executed commits, push, and Pages setup.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>四、查了什麼 / Research & Technical Foundation</h2>
+<ul>
+  <li>
+    <div class="zh"><strong>公式精確度研究 (Metabolic Equation Accuracy)</strong>：比對了 1919 年傳統 Harris-Benedict 公式與 1990 年由 MD Mifflin 與 ST Jeor 提出之 Mifflin-St Jeor 公式。臨床研究證實後者在現代久坐與不同體脂率族群中預測誤差在 ±10% 以內，準確率顯著高於舊式公式。</div>
+    <div class="en">Investigated Harris-Benedict (1919) vs. Mifflin-St Jeor (1990). Clinical studies demonstrate Mifflin-St Jeor yields the lowest error margin (within ±10%) for modern populations across varying body compositions.</div>
+  </li>
+  <li>
+    <div class="zh"><strong>活動量係數界定 (Physical Activity Level Standards)</strong>：深入整理世界衛生組織（WHO）與運動醫學會對 PAL 係數之定義，將 1.2（久坐）、1.375（每週 1-3 天）、1.55（每週 3-5 天）、1.725（每週 6-7 天）、1.9（勞力或高強度雙練）轉換為親民的日常生活情境敘述。</div>
+    <div class="en">Standardized Physical Activity Level (PAL) multipliers (1.2 to 1.9) from WHO and ACSM guidelines, translating complex METs into understandable daily routines.</div>
+  </li>
+  <li>
+    <div class="zh"><strong>熱量赤字安全底線 (Calorie Deficit Safety Boundaries)</strong>：文獻指出每日赤字 300～500 kcal 為每週減重 0.5 公斤之黃金標準；若低於 BMR，甲狀腺素下降將引發身體防禦機制，因此確立前端預警門檻。</div>
+    <div class="en">Established 300–500 kcal/day as the safe deficit standard (approx. 0.5 kg loss/week). Prolonged intake below BMR triggers adaptive thermogenesis; hence the proactive safety alert.</div>
+  </li>
+  <li>
+    <div class="zh"><strong>網頁無障礙標準 (Web Accessibility Standards)</strong>：研究 W3C WAI-ARIA 規範，為動態數值結果框導入 <code>aria-live="polite"</code>，使視障者與螢幕朗讀器能無縫接收即時計算反饋。</div>
+    <div class="en">Implemented W3C WAI-ARIA standards by applying <code>aria-live="polite"</code> to the result viewport, ensuring screen readers announce calculated metrics without page refresh.</div>
+  </li>
+</ul>
+
+<h2>五、下一步 / Next Steps & Future Work</h2>
+<div class="bilingual-pair">
+  <p class="zh"><strong>1. 三大宏量營養素（三大營養素）克數換算</strong>：依據目標卡路里，讓使用者自選飲食比例（如：高蛋白 4:4:2、生酮低碳或均衡飲食），自動計算出蛋白質、碳水與脂肪公克數。</p>
+  <p class="en"><strong>1. Macronutrient Gram Breakdown</strong>: Automatically convert target calories into grams of protein, carbohydrates, and fats based on user-selected dietary splits (e.g., 40/40/20 athletic, low carb, or balanced).</p>
+</div>
+<div class="bilingual-pair">
+  <p class="zh"><strong>2. 一鍵匯出專屬健康計畫圖卡</strong>：透過 HTML5 Canvas 技術，將個人計算結果渲染為精美社群風格圖卡，供使用者存入手機相簿或分享至 Instagram / 健身社群打卡。</p>
+  <p class="en"><strong>2. Shareable Plan Card Export</strong>: Use HTML5 Canvas to render a personalized aesthetic plan card that users can save to their mobile gallery or share to social media.</p>
+</div>
+<div class="bilingual-pair">
+  <p class="zh"><strong>3. 漸進式網頁應用（PWA）離線安裝</strong>：配置 Service Worker 與 Web Manifest，讓使用者能一鍵「加入主畫面」，在無網路環境下亦能秒開計算。</p>
+  <p class="en"><strong>3. Progressive Web App (PWA) Offline Support</strong>: Integrate Service Worker and manifest to allow users to install the tool on their home screen for instant offline access.</p>
+</div>
+
+</body>
+</html>
