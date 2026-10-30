@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMR & TDEE 熱量計算機</title>
+<style>
+  :root {
+    --ink: #16343b;
+    --muted: #526b70;
+    --sea: #087e8b;
+    --coral: #e76f51;
+    --line: #cbded9;
+    --paper: #fffdf8;
+    --wash: #edf7f3;
+    --tag-gain: #2a9d8f;
+    --tag-maintain: #087e8b;
+    --tag-cut: #e76f51;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+  }
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: 1.5rem; margin: 0; }
+  .note { font-size: 0.85rem; color: var(--muted); margin: 0 0 16px; }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group {
+    margin-bottom: 14px;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .radio-group {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .radio-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  input[type="number"], select {
+    flex: 1;
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--ink);
+  }
+  input[type="number"]:focus, select:focus {
+    border-color: var(--sea);
+  }
+  .unit {
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 32px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  button {
+    font: inherit;
+    border-radius: 8px;
+    border: 1px solid var(--sea);
+    background: #fff;
+    color: var(--sea);
+    padding: 9px 16px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button.primary {
+    background: var(--sea);
+    color: #fff;
+  }
+  button:hover {
+    opacity: 0.92;
+  }
+  #error-box {
+    border: 1px solid var(--coral);
+    background: #fdf0ec;
+    color: #b03a2e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+  }
+  #result-box {
+    border: 2px solid var(--sea);
+    border-radius: 10px;
+    background: var(--wash);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .res-metric {
+    background: #fff;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .res-metric-title {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .res-metric-val {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 4px 0 0;
+  }
+  .res-metric-val span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.88rem;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background: var(--wash);
+    font-weight: 700;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .tag-maintain { background: var(--tag-maintain); }
+  .tag-cut { background: var(--tag-cut); }
+  .tag-gain { background: var(--tag-gain); }
+  .safe-note {
+    font-size: 0.82rem;
+    color: #b03a2e;
+    margin-top: 8px;
+  }
+  .disclaimer {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .disclaimer p {
+    margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="t-title">BMR & TDEE 熱量計算機</h1>
+    <button type="button" id="lang-btn">English</button>
+  </header>
+  <p class="note" id="t-subtitle">依據國際 Mifflin-St Jeor 公式精確推算</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label id="t-lbl-gender">生理性別</label>
+      <div class="radio-group">
+        <label><input type="radio" name="gender" value="male" checked> <span id="t-gen-male">男 Male</span></label>
+        <label><input type="radio" name="gender" value="female"> <span id="t-gen-female">女 Female</span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="age" id="t-lbl-age">年齡</label>
+      <div class="input-wrapper">
+        <input type="number" id="age" min="10" max="120" step="1" placeholder="例如 25">
+        <span class="unit" id="t-unit-age">歲</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="height" id="t-lbl-height">身高</label>
+      <div class="input-wrapper">
+        <input type="number" id="height" min="50" max="250" step="0.1" placeholder="例如 170">
+        <span class="unit" id="t-unit-height">公分</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="weight" id="t-lbl-weight">體重</label>
+      <div class="input-wrapper">
+        <input type="number" id="weight" min="20" max="300" step="0.1" placeholder="例如 65">
+        <span class="unit" id="t-unit-weight">公斤</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="activity" id="t-lbl-activity">日常活動程度</label>
+      <select id="activity">
+        <option value="1.2" id="t-act-1">久坐少動（幾乎不運動、辦公室工作）</option>
+        <option value="1.375" id="t-act-2" selected>輕度活動（每週輕度運動 1～3 天）</option>
+        <option value="1.55" id="t-act-3">中度活動（每週中度運動 3～5 天）</option>
+        <option value="1.725" id="t-act-4">高度活動（每週高強度運動 6～7 天）</option>
+        <option value="1.9" id="t-act-5">極高活動（重體力勞動或每日雙練）</option>
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="primary" id="btn-calc">計算熱量</button>
+      <button type="button" id="btn-reset">重設</button>
+    </div>
+  </div>
+
+  <div id="error-box" hidden></div>
+
+  <div id="result-box" aria-live="polite" hidden>
+    <div class="results-grid">
+      <div class="res-metric">
+        <div class="res-metric-title" id="t-res-bmr-title">BMR 基礎代謝率</div>
+        <div class="res-metric-val"><span id="res-bmr">--</span><span>kcal</span></div>
+      </div>
+      <div class="res-metric">
+        <div class="res-metric-title" id="t-res-tdee-title">TDEE 每日總能量消耗</div>
+        <div class="res-metric-val"><span id="res-tdee">--</span><span>kcal</span></div>
+      </div>
+    </div>
+
+    <h2 style="font-size:1.05rem; margin:16px 0 8px;" id="t-goals-title">目標熱量攝取建議</h2>
+    <table>
+      <thead>
+        <tr>
+          <th id="t-th-goal">目標</th>
+          <th id="t-th-cal">建議攝取熱量</th>
+          <th id="t-th-desc">說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-maintain" id="t-tag-maintain">維持</span></td>
+          <td><strong id="goal-maintain">--</strong> kcal</td>
+          <td id="t-desc-maintain">熱量平衡，體重保持現況</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-cut" id="t-tag-cut-mild">溫和減脂</span></td>
+          <td><strong id="goal-cut-mild">--</strong> kcal</td>
+          <td id="t-desc-cut-mild">TDEE － 300 kcal，適合平穩減脂</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-cut" id="t-tag-cut-fast">積極減脂</span></td>
+          <td><strong id="goal-cut-fast">--</strong> kcal</td>
+          <td id="t-desc-cut-fast">TDEE － 500 kcal，注意不可長期低於 BMR</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gain" id="t-tag-gain-mild">溫和增肌</span></td>
+          <td><strong id="goal-gain-mild">--</strong> kcal</td>
+          <td id="t-desc-gain-mild">TDEE ＋ 300 kcal，搭配規律阻力訓練</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gain" id="t-tag-gain-fast">積極增肌</span></td>
+          <td><strong id="goal-gain-fast">--</strong> kcal</td>
+          <td id="t-desc-gain-fast">TDEE ＋ 500 kcal，提高訓練強度與熱量盈餘</td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="safe-warning" class="safe-note" hidden></div>
+  </div>
+
+  <div class="disclaimer">
+    <p id="t-disc1">※ 本工具採用國際通用的 Mifflin-St Jeor 公式計算，計算結果為估算值，個體體質、肌肉量與生活習慣皆可能影響實際代謝率。</p>
+    <p id="t-disc2">※ 僅供健康飲食與運動規畫參考，非醫療診斷；若有特殊慢性病、孕期或進食障礙，請諮詢專業醫師或營養師。</p>
+  </div>
+</main>
+
+<script>
+(function() {
+  var lang = "zh";
+  var lastResult = null;
+  var currentErrorKey = null;
+
+  var I18N = {
+    zh: {
+      docTitle: "BMR & TDEE 熱量計算機",
+      title: "BMR & TDEE 熱量計算機",
+      langBtn: "English",
+      subtitle: "依據國際 Mifflin-St Jeor 公式精確推算",
+      lblGender: "生理性別",
+      genMale: "男 Male",
+      genFemale: "女 Female",
+      lblAge: "年齡",
+      unitAge: "歲",
+      phAge: "例如 25",
+      lblHeight: "身高",
+      unitHeight: "公分",
+      phHeight: "例如 170",
+      lblWeight: "體重",
+      unitWeight: "公斤",
+      phWeight: "例如 65",
+      lblActivity: "日常活動程度",
+      act1: "久坐少動（幾乎不運動、辦公室工作）",
+      act2: "輕度活動（每週輕度運動 1～3 天）",
+      act3: "中度活動（每週中度運動 3～5 天）",
+      act4: "高度活動（每週高強度運動 6～7 天）",
+      act5: "極高活動（重體力勞動或每日雙練）",
+      btnCalc: "計算熱量",
+      btnReset: "重設",
+      resBmrTitle: "BMR 基礎代謝率",
+      resTdeeTitle: "TDEE 每日總能量消耗",
+      goalsTitle: "目標熱量攝取建議",
+      thGoal: "目標",
+      thCal: "建議攝取熱量",
+      thDesc: "說明",
+      tagMaintain: "維持",
+      descMaintain: "熱量平衡，體重保持現況",
+      tagCutMild: "溫和減脂",
+      descCutMild: "TDEE － 300 kcal，適合平穩減脂",
+      tagCutFast: "積極減脂",
+      descCutFast: "TDEE － 500 kcal，注意不可長期低於 BMR",
+      tagGainMild: "溫和增肌",
+      descGainMild: "TDEE ＋ 300 kcal，搭配規律阻力訓練",
+      tagGainFast: "積極增肌",
+      descGainFast: "TDEE ＋ 500 kcal，提高訓練強度與熱量盈餘",
+      disc1: "※ 本工具採用國際通用的 Mifflin-St Jeor 公式計算，計算結果為估算值，個體體質、肌肉量與生活習慣皆可能影響實際代謝率。",
+      disc2: "※ 僅供健康飲食與運動規畫參考，非醫療診斷；若有特殊慢性病、孕期或進食障礙，請諮詢專業醫師或營養師。",
+      errEmpty: "請輸入年齡、身高與體重。",
+      errAge: "請輸入有效的年齡（建議範圍 10～120 歲）。",
+      errHeight: "請輸入有效的身高（建議範圍 50～250 公分）。",
+      errWeight: "請輸入有效的體重（建議範圍 20～300 公斤）。",
+      warnBelowBmr: "⚠️ 提醒：積極減脂建議熱量低於您的基礎代謝率（BMR）。長期攝取低於 BMR 可能導致代謝下降與肌肉流失，建議以「溫和減脂」為優先。"
+    },
+    en: {
+      docTitle: "BMR & TDEE Calorie Calculator",
+      title: "BMR & TDEE Calorie Calculator",
+      langBtn: "中文",
+      subtitle: "Accurate estimation using the Mifflin-St Jeor formula",
+      lblGender: "Biological Sex",
+      genMale: "Male 男",
+      genFemale: "Female 女",
+      lblAge: "Age",
+      unitAge: "yrs",
+      phAge: "e.g. 25",
+      lblHeight: "Height",
+      unitHeight: "cm",
+      phHeight: "e.g. 170",
+      lblWeight: "Weight",
+      unitWeight: "kg",
+      phWeight: "e.g. 65",
+      lblActivity: "Activity Level",
+      act1: "Sedentary (little or no exercise, desk job)",
+      act2: "Lightly Active (light exercise 1–3 days/wk)",
+      act3: "Moderately Active (moderate exercise 3–5 days/wk)",
+      act4: "Very Active (hard exercise 6–7 days/wk)",
+      act5: "Extremely Active (hard daily training or physical job)",
+      btnCalc: "Calculate Calories",
+      btnReset: "Reset",
+      resBmrTitle: "BMR (Basal Metabolic Rate)",
+      resTdeeTitle: "TDEE (Total Daily Energy Expenditure)",
+      goalsTitle: "Calorie Intake Recommendations",
+      thGoal: "Goal",
+      thCal: "Target Calories",
+      thDesc: "Description",
+      tagMaintain: "Maintain",
+      descMaintain: "Calorie balance, maintain current weight",
+      tagCutMild: "Mild Cut",
+      descCutMild: "TDEE － 300 kcal, sustainable steady fat loss",
+      tagCutFast: "Active Cut",
+      descCutFast: "TDEE － 500 kcal, avoid staying below BMR long term",
+      tagGainMild: "Mild Bulk",
+      descGainMild: "TDEE ＋ 300 kcal, with structured resistance training",
+      tagGainFast: "Active Bulk",
+      descGainFast: "TDEE ＋ 500 kcal, for higher training volume & surplus",
+      disc1: "※ This calculator uses the Mifflin-St Jeor formula. Results are estimations; individual metabolic rate may vary based on genetics, muscle mass, and habits.",
+      disc2: "※ For lifestyle planning only, not intended as medical advice. Consult a healthcare professional or registered dietitian for specialized dietary needs.",
+      errEmpty: "Please enter age, height, and weight.",
+      errAge: "Please enter a valid age (recommended range: 10–120 years).",
+      errHeight: "Please enter a valid height (recommended range: 50–250 cm).",
+      errWeight: "Please enter a valid weight (recommended range: 20–300 kg).",
+      warnBelowBmr: "⚠️ Note: The active cut calorie level is below your BMR. Prolonged intake below BMR may reduce metabolism and lean mass. 'Mild Cut' is recommended."
+    }
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function applyLanguage() {
+    var t = I18N[lang];
+    document.documentElement.lang = lang === "zh" ? "zh-Hant-TW" : "en";
+    document.title = t.docTitle;
+    $("t-title").textContent = t.title;
+    $("lang-btn").textContent = t.langBtn;
+    $("t-subtitle").textContent = t.subtitle;
+    $("t-lbl-gender").textContent = t.lblGender;
+    $("t-gen-male").textContent = t.genMale;
+    $("t-gen-female").textContent = t.genFemale;
+    $("t-lbl-age").textContent = t.lblAge;
+    $("t-unit-age").textContent = t.unitAge;
+    $("age").placeholder = t.phAge;
+    $("t-lbl-height").textContent = t.lblHeight;
+    $("t-unit-height").textContent = t.unitHeight;
+    $("height").placeholder = t.phHeight;
+    $("t-lbl-weight").textContent = t.lblWeight;
+    $("t-unit-weight").textContent = t.unitWeight;
+    $("weight").placeholder = t.phWeight;
+    $("t-lbl-activity").textContent = t.lblActivity;
+    $("t-act-1").textContent = t.act1;
+    $("t-act-2").textContent = t.act2;
+    $("t-act-3").textContent = t.act3;
+    $("t-act-4").textContent = t.act4;
+    $("t-act-5").textContent = t.act5;
+    $("btn-calc").textContent = t.btnCalc;
+    $("btn-reset").textContent = t.btnReset;
+    $("t-res-bmr-title").textContent = t.resBmrTitle;
+    $("t-res-tdee-title").textContent = t.resTdeeTitle;
+    $("t-goals-title").textContent = t.goalsTitle;
+    $("t-th-goal").textContent = t.thGoal;
+    $("t-th-cal").textContent = t.thCal;
+    $("t-th-desc").textContent = t.thDesc;
+    $("t-tag-maintain").textContent = t.tagMaintain;
+    $("t-desc-maintain").textContent = t.descMaintain;
+    $("t-tag-cut-mild").textContent = t.tagCutMild;
+    $("t-desc-cut-mild").textContent = t.descCutMild;
+    $("t-tag-cut-fast").textContent = t.tagCutFast;
+    $("t-desc-cut-fast").textContent = t.descCutFast;
+    $("t-tag-gain-mild").textContent = t.tagGainMild;
+    $("t-desc-gain-mild").textContent = t.descGainMild;
+    $("t-tag-gain-fast").textContent = t.tagGainFast;
+    $("t-desc-gain-fast").textContent = t.descGainFast;
+    $("t-disc1").textContent = t.disc1;
+    $("t-disc2").textContent = t.disc2;
+
+    if (currentErrorKey) {
+      $("error-box").textContent = t[currentErrorKey];
+    }
+
+    if (lastResult) {
+      renderResult(lastResult);
+    }
+  }
+
+  function showError(errKey) {
+    currentErrorKey = errKey;
+    var eb = $("error-box");
+    eb.textContent = I18N[lang][errKey];
+    eb.hidden = false;
+    $("result-box").hidden = true;
+  }
+
+  function clearError() {
+    currentErrorKey = null;
+    $("error-box").hidden = true;
+    $("error-box").textContent = "";
+  }
+
+  function renderResult(res) {
+    var t = I18N[lang];
+    $("res-bmr").textContent = Math.round(res.bmr);
+    $("res-tdee").textContent = Math.round(res.tdee);
+
+    $("goal-maintain").textContent = Math.round(res.tdee);
+    $("goal-cut-mild").textContent = Math.max(800, Math.round(res.tdee - 300));
+    var cutFastVal = Math.max(800, Math.round(res.tdee - 500));
+    $("goal-cut-fast").textContent = cutFastVal;
+    $("goal-gain-mild").textContent = Math.round(res.tdee + 300);
+    $("goal-gain-fast").textContent = Math.round(res.tdee + 500);
+
+    var warnEl = $("safe-warning");
+    if (cutFastVal < res.bmr) {
+      warnEl.textContent = t.warnBelowBmr;
+      warnEl.hidden = false;
+    } else {
+      warnEl.hidden = true;
+    }
+
+    $("result-box").hidden = false;
+  }
+
+  function calculate() {
+    clearError();
+    var ageStr = $("age").value.trim();
+    var hStr = $("height").value.trim();
+    var wStr = $("weight").value.trim();
+
+    if (ageStr === "" || hStr === "" || wStr === "") {
+      showError("errEmpty");
+      return;
+    }
+
+    var age = Number(ageStr);
+    var h = Number(hStr);
+    var w = Number(wStr);
+
+    if (isNaN(age) || !isFinite(age) || age < 10 || age > 120) {
+      showError("errAge");
+      return;
+    }
+
+    if (isNaN(h) || !isFinite(h) || h < 50 || h > 250) {
+      showError("errHeight");
+      return;
+    }
+
+    if (isNaN(w) || !isFinite(w) || w < 20 || w > 300) {
+      showError("errWeight");
+      return;
+    }
+
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var activityMultiplier = Number($("activity").value);
+
+    // Mifflin-St Jeor Formula
+    // Men: (10 * w) + (6.25 * h) - (5 * age) + 5
+    // Women: (10 * w) + (6.25 * h) - (5 * age) - 161
+    var base = (10 * w) + (6.25 * h) - (5 * age);
+    var bmr = gender === "male" ? (base + 5) : (base - 161);
+    var tdee = bmr * activityMultiplier;
+
+    lastResult = {
+      bmr: bmr,
+      tdee: tdee
+    };
+
+    renderResult(lastResult);
+  }
+
+  function resetForm() {
+    $("age").value = "";
+    $("height").value = "";
+    $("weight").value = "";
+    $("activity").value = "1.375";
+    document.querySelector('input[name="gender"][value="male"]').checked = true;
+    clearError();
+    $("result-box").hidden = true;
+    lastResult = null;
+  }
+
+  $("btn-calc").addEventListener("click", calculate);
+  $("btn-reset").addEventListener("click", resetForm);
+
+  ["age", "height", "weight"].forEach(function(id) {
+    $(id).addEventListener("keydown", function(e) {
+      if (e.key === "Enter") calculate();
+    });
+  });
+
+  $("lang-btn").addEventListener("click", function() {
+    lang = lang === "zh" ? "en" : "zh";
+    applyLanguage();
+  });
+
+  applyLanguage();
+})();
+</script>
+<!-- 交接：已完成 BMR & TDEE 熱量計算機初版（v1），具中英雙語切換、Mifflin-St Jeor 公式精確試算、目標熱量建議與防呆檢查，完全無外部資源引用與個人資料儲存，可直接使用。 -->
+</body>
+</html>
