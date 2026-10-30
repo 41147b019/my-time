@@ -21,7 +21,7 @@
   .slide {
     width: 297mm;
     height: 210mm;
-    padding: 14mm 18mm;
+    padding: 12mm 18mm 12mm 18mm;
     page-break-after: always;
     display: flex;
     flex-direction: column;
@@ -30,28 +30,46 @@
     background: #fff;
     overflow: hidden;
   }
+  /* Very top repo bar on each content slide */
+  .slide-top-repo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #edf7f3;
+    border-radius: 6px;
+    padding: 2mm 5mm;
+    font-size: 7.8pt;
+    color: #16343b;
+    margin-bottom: 3mm;
+    border: 1px solid #cbded9;
+  }
+  .slide-top-repo a {
+    color: #087e8b;
+    text-decoration: underline;
+    font-weight: bold;
+  }
   /* Slide Header */
   .slide-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     border-bottom: 2px solid #087e8b;
-    padding-bottom: 6mm;
+    padding-bottom: 4mm;
   }
   .slide-title-zh {
-    font-size: 22pt;
+    font-size: 21pt;
     font-weight: 800;
     color: #16343b;
     margin: 0;
   }
   .slide-title-en {
-    font-size: 12pt;
+    font-size: 11.5pt;
     font-weight: 600;
     color: #087e8b;
-    margin: 2px 0 0;
+    margin: 1px 0 0;
   }
   .slide-tag {
-    font-size: 8.5pt;
+    font-size: 8pt;
     font-weight: 700;
     color: #fff;
     background: #087e8b;
@@ -62,7 +80,7 @@
   /* Content Area */
   .slide-body {
     flex: 1;
-    padding: 8mm 0 4mm;
+    padding: 6mm 0 3mm;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -92,17 +110,17 @@
     background: #edf7f3;
     border: 1px solid #cbded9;
     border-radius: 10px;
-    padding: 6mm 7mm;
+    padding: 5mm 6mm;
   }
   .card-white {
     background: #fff;
     border: 1px solid #cbded9;
     border-radius: 10px;
-    padding: 6mm 7mm;
-    box-shadow: 0 4px 10px rgba(8, 126, 139, 0.05);
+    padding: 5mm 6mm;
+    box-shadow: 0 3px 8px rgba(8, 126, 139, 0.05);
   }
   .card-title-zh {
-    font-size: 12pt;
+    font-size: 11.5pt;
     font-weight: 700;
     color: #16343b;
     margin: 0 0 2px;
@@ -111,19 +129,19 @@
     gap: 6px;
   }
   .card-title-en {
-    font-size: 9pt;
+    font-size: 8.5pt;
     font-weight: 600;
     color: #087e8b;
-    margin: 0 0 5px;
+    margin: 0 0 4px;
   }
   .card-desc-zh {
-    font-size: 9pt;
+    font-size: 8.5pt;
     color: #2c3e50;
     line-height: 1.45;
     margin: 0 0 3px;
   }
   .card-desc-en {
-    font-size: 8pt;
+    font-size: 7.8pt;
     color: #556c71;
     line-height: 1.35;
     margin: 0;
@@ -135,37 +153,51 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20mm 20mm;
+    padding: 16mm 20mm;
+  }
+  .title-top-repo-bar {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-size: 11pt;
+    display: inline-block;
+    margin-bottom: 8mm;
+    backdrop-filter: blur(4px);
+  }
+  .title-top-repo-bar a {
+    color: #8bf0ba;
+    font-weight: bold;
+    text-decoration: underline;
   }
   .title-badge {
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
-    padding: 5px 16px;
-    border-radius: 30px;
-    font-size: 10.5pt;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 9.5pt;
     font-weight: 600;
     display: inline-block;
-    margin-bottom: 10mm;
-    backdrop-filter: blur(4px);
+    margin-bottom: 6mm;
   }
   .title-main-zh {
-    font-size: 32pt;
+    font-size: 30pt;
     font-weight: 800;
-    margin: 0 0 4mm;
+    margin: 0 0 3mm;
     letter-spacing: 1px;
   }
   .title-main-en {
-    font-size: 16pt;
+    font-size: 15pt;
     font-weight: 400;
     opacity: 0.9;
-    margin: 0 0 12mm;
+    margin: 0 0 10mm;
   }
   .title-meta {
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 12px;
     padding: 5mm 12mm;
-    font-size: 10pt;
+    font-size: 9.5pt;
     line-height: 1.7;
   }
   .title-meta a {
@@ -176,7 +208,7 @@
   /* Screenshot showcase slide */
   .demo-container {
     display: flex;
-    gap: 12mm;
+    gap: 10mm;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -187,23 +219,23 @@
     background: #fbfdfc;
     border: 1px solid #cbded9;
     border-radius: 10px;
-    padding: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
   }
   .demo-item img {
-    max-height: 125mm;
+    max-height: 120mm;
     width: auto;
     max-width: 100%;
     border-radius: 6px;
   }
   .demo-caption {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     font-weight: 700;
     color: #087e8b;
     margin-top: 4px;
   }
   .demo-caption-en {
-    font-size: 7.5pt;
+    font-size: 7.2pt;
     color: #556c71;
     font-weight: normal;
   }
@@ -214,19 +246,28 @@
 <!-- SLIDE 1: 封面 -->
 <div class="slide title-slide">
   <div>
+    <!-- VERY TOP GITHUB REPO BAR -->
+    <div class="title-top-repo-bar">
+      🔗 <strong>專題本體 GitHub 連結 / Project Repository:</strong> 
+      <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a>
+    </div>
+    <br>
     <div class="title-badge">11/02 專題成果發表 / Project Presentation</div>
     <h1 class="title-main-zh">BMR & TDEE 熱量計算機</h1>
     <div class="title-main-en">BMR & TDEE Calorie Calculator</div>
     <div class="title-meta">
       <div><strong>報告人 / Presenter:</strong> 41147b019</div>
-      <div><strong>GitHub 倉庫 / Repository:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></div>
-      <div><strong>線上體驗 / Live Demo:</strong> <a href="https://41147b019.github.io/tdee-calculator/">https://41147b019.github.io/tdee-calculator/</a></div>
+      <div><strong>線上體驗網址 / Live Demo:</strong> <a href="https://41147b019.github.io/tdee-calculator/">https://41147b019.github.io/tdee-calculator/</a></div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 2: 動機與痛點 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">動機與痛點分析</h2>
@@ -264,6 +305,10 @@
 
 <!-- SLIDE 3: 核心功能與亮點 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">產品核心功能與特色</h2>
@@ -305,8 +350,12 @@
   </div>
 </div>
 
-<!-- SLIDE 4: 程式實際運行展示 (新增截圖頁) -->
+<!-- SLIDE 4: 程式實際運行展示 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">程式實際運行展示</h2>
@@ -336,6 +385,10 @@
 
 <!-- SLIDE 5: 人機協同工作流程 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">人機協同開發工作流程</h2>
@@ -364,7 +417,7 @@
         <p class="card-desc-en">Implements single-file HTML/CSS/JS, fixes I18N bugs, integrates a11y labels, and delivers to outbox.</p>
       </div>
     </div>
-    <div style="margin-top: 5mm; background: #edf7f3; border-radius: 8px; padding: 3mm 6mm; font-size: 8.5pt; border-left: 4px solid #087e8b;">
+    <div style="margin-top: 4mm; background: #edf7f3; border-radius: 8px; padding: 3mm 6mm; font-size: 8.2pt; border-left: 4px solid #087e8b;">
       <div style="font-weight: bold; color: #087e8b;">🔁 傳紙條工作流（Inbox / Outbox Relay Mechanism）:</div>
       <div>小隊長下指令 ➔ 領隊出紙條放 Inbox ➔ 隊員接棒在 Outbox 另存新檔交接 ➔ 領隊嚴格複驗通過 ➔ 小隊長驗收！全程步步留痕、高透明度。</div>
     </div>
@@ -377,6 +430,10 @@
 
 <!-- SLIDE 6: 科學依據與技術實作 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">科學依據與工程實踐</h2>
@@ -387,16 +444,16 @@
   <div class="slide-body">
     <div class="grid-2">
       <div>
-        <div class="card-title-zh" style="font-size: 11pt; color: #087e8b;">📚 臨床文獻研究 / Clinical Evidence</div>
-        <ul style="font-size: 8.5pt; padding-left: 16px; margin: 3mm 0 0; line-height: 1.5;">
+        <div class="card-title-zh" style="font-size: 10.5pt; color: #087e8b;">📚 臨床文獻研究 / Clinical Evidence</div>
+        <ul style="font-size: 8.2pt; padding-left: 16px; margin: 2mm 0 0; line-height: 1.45;">
           <li><strong>Mifflin-St Jeor (1990)</strong>：證實現代久坐生活型態下，預測 BMR 誤差在 ±10% 內，臨床優於 1919 年傳統公式。</li>
           <li><strong>安全赤字標準 (Safe Deficits)</strong>：衛福部及國際營養學建議每日維持 300～500 kcal 赤字，禁止低於 BMR 底線。</li>
           <li><strong>活動係數標準化 (PAL Multipliers)</strong>：參照 WHO / ACSM 定義，精準映射 1.2～1.9 的每週運動量區間。</li>
         </ul>
       </div>
       <div>
-        <div class="card-title-zh" style="font-size: 11pt; color: #087e8b;">💻 現代網頁工程技術 / Web Standards</div>
-        <ul style="font-size: 8.5pt; padding-left: 16px; margin: 3mm 0 0; line-height: 1.5;">
+        <div class="card-title-zh" style="font-size: 10.5pt; color: #087e8b;">💻 現代網頁工程技術 / Web Standards</div>
+        <ul style="font-size: 8.2pt; padding-left: 16px; margin: 2mm 0 0; line-height: 1.45;">
           <li><strong>零外部依賴 (Zero Dependencies)</strong>：完全無需 npm / CDN，不發外部連線，秒開且安全。</li>
           <li><strong>W3C WAI-ARIA 無障礙規範</strong>：使用 <code>aria-live="polite"</code> 支援視障螢幕朗讀器即時廣播計算結果。</li>
           <li><strong>現代 Git 自動化發布</strong>：透過 GitHub Pages 實現靜態網頁持續交付（Continuous Delivery）。</li>
@@ -412,6 +469,10 @@
 
 <!-- SLIDE 7: 未來展望與結語 -->
 <div class="slide">
+  <div class="slide-top-repo">
+    <span>🔗 <strong>專題 GitHub 倉庫 / Repo:</strong> <a href="https://github.com/41147b019/tdee-calculator">https://github.com/41147b019/tdee-calculator</a></span>
+    <span>線上體驗: <a href="https://41147b019.github.io/tdee-calculator/">41147b019.github.io/tdee-calculator/</a></span>
+  </div>
   <div class="slide-header">
     <div>
       <h2 class="slide-title-zh">未來展望與總結</h2>
@@ -420,7 +481,7 @@
     <div class="slide-tag">06 / FUTURE</div>
   </div>
   <div class="slide-body">
-    <div class="grid-3" style="margin-bottom: 5mm;">
+    <div class="grid-3" style="margin-bottom: 4mm;">
       <div class="card">
         <div class="card-title-zh">🥩 三大營養素配置</div>
         <div class="card-title-en">Macro Gram Splits</div>
@@ -440,11 +501,11 @@
         <p class="card-desc-en">One-click install to mobile home screen with zero-network offline capability.</p>
       </div>
     </div>
-    <div style="text-align: center; background: #edf7f3; border-radius: 10px; padding: 5mm 8mm; border: 1px dashed #087e8b;">
-      <div style="font-size: 14pt; font-weight: 800; color: #087e8b; margin-bottom: 1mm;">
+    <div style="text-align: center; background: #edf7f3; border-radius: 10px; padding: 4mm 8mm; border: 1px dashed #087e8b;">
+      <div style="font-size: 13pt; font-weight: 800; color: #087e8b; margin-bottom: 1mm;">
         歡迎現場體驗 / Try it out now: <a href="https://41147b019.github.io/tdee-calculator/" style="color: #087e8b;">41147b019.github.io/tdee-calculator/</a>
       </div>
-      <div style="font-size: 10pt; color: #556c71;">謝謝大家！歡迎提問與交流 / Thank you! Any questions?</div>
+      <div style="font-size: 9.5pt; color: #556c71;">謝謝大家！歡迎提問與交流 / Thank you! Any questions?</div>
     </div>
   </div>
   <div class="slide-footer">
