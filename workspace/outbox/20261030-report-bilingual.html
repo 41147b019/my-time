@@ -6,10 +6,10 @@
 <style>
   @page {
     size: A4;
-    margin: 20mm 18mm 20mm 18mm;
+    margin: 18mm 16mm 18mm 16mm;
     @bottom-right {
       content: counter(page);
-      font-size: 9pt;
+      font-size: 8.5pt;
       color: #666;
     }
   }
@@ -18,57 +18,57 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
     color: #1a2b2e;
     background: #fff;
-    line-height: 1.6;
-    font-size: 10pt;
+    line-height: 1.55;
+    font-size: 9.5pt;
     margin: 0;
     padding: 0;
   }
   .header {
     border-bottom: 2px solid #087e8b;
-    padding-bottom: 12px;
-    margin-bottom: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
   }
   h1 {
-    font-size: 18pt;
+    font-size: 17pt;
     margin: 0 0 4px;
     color: #087e8b;
   }
   .sub-title {
-    font-size: 11pt;
+    font-size: 10.5pt;
     color: #556c71;
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .meta-box {
     background: #edf7f3;
     border-left: 4px solid #087e8b;
     padding: 8px 12px;
-    margin: 12px 0 16px;
-    font-size: 9pt;
+    margin: 10px 0 14px;
+    font-size: 8.8pt;
   }
   .meta-box p { margin: 2px 0; }
   .meta-box a { color: #087e8b; text-decoration: none; word-break: break-all; }
   h2 {
-    font-size: 13pt;
+    font-size: 12pt;
     color: #16343b;
     border-bottom: 1px solid #cbded9;
     padding-bottom: 4px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 18px;
+    margin-bottom: 8px;
     page-break-after: avoid;
   }
   h3 {
-    font-size: 10.5pt;
+    font-size: 10pt;
     color: #087e8b;
-    margin: 12px 0 4px;
+    margin: 10px 0 4px;
     page-break-after: avoid;
   }
   p {
-    margin: 0 0 6px;
+    margin: 0 0 5px;
     text-align: justify;
   }
   .bilingual-pair {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .zh {
     color: #1a2b2e;
@@ -76,24 +76,23 @@
   }
   .en {
     color: #4b6267;
-    font-size: 9pt;
+    font-size: 8.5pt;
     margin-top: 1px;
-    font-style: normal;
   }
   ul, ol {
-    margin: 4px 0 10px;
-    padding-left: 20px;
+    margin: 4px 0 8px;
+    padding-left: 18px;
   }
-  li { margin-bottom: 6px; }
+  li { margin-bottom: 5px; }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
-    font-size: 8.5pt;
+    margin: 8px 0;
+    font-size: 8.2pt;
   }
   th, td {
     border: 1px solid #cbded9;
-    padding: 6px 8px;
+    padding: 5px 8px;
     text-align: left;
   }
   th {
@@ -101,17 +100,36 @@
     color: #16343b;
     font-weight: bold;
   }
-  .badge {
-    display: inline-block;
-    padding: 1px 6px;
-    border-radius: 4px;
-    background: #087e8b;
-    color: #fff;
-    font-size: 7.5pt;
-    font-weight: bold;
-  }
   .page-break {
     page-break-after: always;
+  }
+  /* Screenshot Appendix */
+  .screenshot-grid {
+    display: flex;
+    gap: 12px;
+    margin: 10px 0;
+    justify-content: center;
+  }
+  .screenshot-col {
+    flex: 1;
+    text-align: center;
+    background: #fbfdfc;
+    border: 1px solid #cbded9;
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .screenshot-col img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #e2ece9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .screenshot-caption {
+    font-size: 8pt;
+    color: #556c71;
+    margin-top: 6px;
+    line-height: 1.35;
   }
 </style>
 </head>
@@ -239,6 +257,31 @@
 <div class="bilingual-pair">
   <p class="zh"><strong>3. 漸進式網頁應用（PWA）離線安裝</strong>：配置 Service Worker 與 Web Manifest，讓使用者能一鍵「加入主畫面」，在無網路環境下亦能秒開計算。</p>
   <p class="en"><strong>3. Progressive Web App (PWA) Offline Support</strong>: Integrate Service Worker and manifest to allow users to install the tool on their home screen for instant offline access.</p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>附錄：程式實際執行畫面 / Appendix: Live Application Interface & Operation</h2>
+<div class="bilingual-pair">
+  <p class="zh">以下為本計算機在瀏覽器中實際運行的完整畫面截圖，展現真實資料輸入、核心指標試算、目標建議表格與雙語安全警示之運作狀態：</p>
+  <p class="en">The following screenshots illustrate the actual live calculator in browser runtime, demonstrating real input parameters, calculated metrics, the goal dietary recommendation table, and bilingual safety alerts:</p>
+</div>
+
+<div class="screenshot-grid">
+  <div class="screenshot-col">
+    <img src="app-screenshot-zh.png" alt="中文介面計算結果畫面">
+    <div class="screenshot-caption">
+      <strong>圖一：繁體中文介面計算結果與五大目標建議</strong><br>
+      <em>Figure 1: Traditional Chinese interface showing calculated BMR/TDEE & target intake recommendations</em>
+    </div>
+  </div>
+  <div class="screenshot-col">
+    <img src="app-screenshot-en.png" alt="英文介面與代謝健康安全警示">
+    <div class="screenshot-caption">
+      <strong>圖二：英文介面操作與代謝健康防呆預警提示</strong><br>
+      <em>Figure 2: English interface demonstration with proactive metabolic safeguard alert (below BMR)</em>
+    </div>
+  </div>
 </div>
 
 </body>
